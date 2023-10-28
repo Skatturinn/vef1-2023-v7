@@ -163,7 +163,7 @@ function validateInteger(num, min = 0, max = Infinity) {
 function formatProduct(product, quantity = undefined) {
 	if (quantity && quantity > 1) {
 		if (validateInteger(quantity)) {
-			return product.title + ' - ' + quantity.toString() + 'x' + formatPrice(product.price) + '. Samtals ' + formatPrice(product.price * quantity);
+			return product.title + ' - ' + quantity.toString() + 'x' + formatPrice(product.price) + ' Samtals ' + formatPrice(product.price * quantity);
 		} else {
 			return 'fjoldi er ekki heiltala';
 		}
@@ -171,7 +171,6 @@ function formatProduct(product, quantity = undefined) {
 	else {
 		return product.title + ' - ' + formatPrice(product.price)
 	}
-	/* Útfæra */
 }
 
 /**
@@ -190,11 +189,13 @@ function cartInfo(cart) {
 	let str = '';
 	if (Object.keys(cart.lines).length > 0) {
 		for (let i = 0; i < Object.keys(cart.lines).length; i++) {
-			str = str + formatProduct(cart.lines[i]) + '\n';
+			str = str + formatProduct(cart.lines[i].product, cart.lines[i].quantity) + '\n';
 		}
+		return str;
 	} else {
 		return 'tómt';
 	}
+	// return str;
 }
 
 // --------------------------------------------------------
@@ -341,6 +342,7 @@ function addProductToCart() {
 			cart.lines.push({ product: prodcutToAdd, quantity: tt });
 		}
 	} else { return 'Vara fannst ekki.' }
+
 }
 
 
@@ -364,6 +366,9 @@ function addProductToCart() {
  */
 function showCart() {
 	/* Útfæra */
+	for (let i = 0; i < products.length; i++) {
+		str = str + formatProduct(products[i]) + products[i].description + '\n';
+	}
 }
 
 /**

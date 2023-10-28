@@ -300,7 +300,7 @@ function showProducts() {
 		s += i + 1;
 		str += '#' + s.toString() + ' ' + products[i].title + bil + products[i].description + bil + formatPrice(products[i].price) + '\n';
 	}
-	return str;
+	console.info(str);
 }
 /**
  * Bæta vöru við körfu.
@@ -338,17 +338,20 @@ function addProductToCart() {
 			return;
 		}
 		const tt = Number.parseInt(fj, 10);
-		if (validateInteger(tt)) {
+		if (validateInteger(tt, 1, 99)) {
 			products.find((i) => i.id === nr)
 		} else {
-			console.error(`Fjöldi verður að vera heiltala stærri en 0.`);
+			console.error(`Fjöldi er ekki löglegur, lágmark 1 og hámark 99.`);
 		}
 		if (productInCart) {
 			productInCart.quantity += tt
 		} else {
 			cart.lines.push({ product: prodcutToAdd, quantity: tt });
 		}
-	} else { return 'Vara fannst ekki.' }
+	} else {
+		console.error('Vara fannst ekki.');
+		return
+	}
 }
 
 
@@ -372,7 +375,7 @@ function addProductToCart() {
  */
 function showCart() {
 	/* Útfæra */
-	return cartInfo(cart);
+	console.info(cartInfo(cart));
 }
 /**
  * Klárar kaup og birtir kvittun í console.
@@ -404,7 +407,10 @@ function checkout() {
 		cart.name = nafn;
 		cart.address = heimilisfang;
 	} else {
-		return 'Karfan er tóm.';
+		console.log('Karfan er tóm.');
+		return;
 	}
-	return 'Pöntun móttekin ' + cart.name + '.\n' + 'Vörur verða sendar á ' + cart.address + '.\n\n' + showCart();
+	let str = 'Pöntun móttekin ' + cart.name + '.\n' + 'Vörur verða sendar á ' + cart.address + '.\n\n' + cartInfo(cart);
+	console.log(str);
+	return;
 }

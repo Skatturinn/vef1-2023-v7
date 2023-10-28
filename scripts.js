@@ -189,15 +189,15 @@ function cartInfo(cart) {
 	/* Útfæra */
 	let str = '';
 	let sum = 0;
-	if (Object.keys(cart.lines).length > 0) {
+	if (cart.lines.length > 0) {
 		for (let i = 0; i < Object.keys(cart.lines).length; i++) {
 			str += formatProduct(cart.lines[i].product, cart.lines[i].quantity) + '\n';
-			sum += cart.lines[i].product.price*cart.lines[i].quantity;
+			sum += cart.lines[i].product.price * cart.lines[i].quantity;
 		}
 		str += 'Samtals: ' + formatPrice(sum);
 		return str;
-	} else { 
-		return 'tómt';
+	} else {
+		return 'Karfan er tóm.';
 	}
 	// return str;
 }
@@ -349,7 +349,6 @@ function addProductToCart() {
 			cart.lines.push({ product: prodcutToAdd, quantity: tt });
 		}
 	} else { return 'Vara fannst ekki.' }
-
 }
 
 
@@ -373,11 +372,8 @@ function addProductToCart() {
  */
 function showCart() {
 	/* Útfæra */
-	for (let i = 0; i < products.length; i++) {
-		str = str + formatProduct(products[i]) + products[i].description + '\n';
-	}
+	return cartInfo(cart);
 }
-
 /**
  * Klárar kaup og birtir kvittun í console.
  * Ef ekkert er í körfu eru birt skilboð í console:
@@ -398,4 +394,17 @@ function showCart() {
  */
 function checkout() {
 	/* Útfæra */
+	if (cart.lines.length > 0) {
+		const nafn = prompt('Nafn?');
+		const heimilisfang = prompt('heimilisfang?')
+		if (!nafn || !heimilisfang) {
+			console.error('Nafn og heimilisfang má ekki vera tómt.');
+			return;
+		}
+		cart.name = nafn;
+		cart.address = heimilisfang;
+	} else {
+		return 'Karfan er tóm.';
+	}
+	return 'Pöntun móttekin ' + cart.name + '.\n' + 'Vörur verða sendar á ' + cart.address + '.\n\n' + showCart();
 }

@@ -171,6 +171,7 @@ function formatProduct(product, quantity = undefined) {
 	else {
 		return product.title + ' - ' + formatPrice(product.price)
 	}
+	/* Útfæra */
 }
 
 /**
@@ -187,12 +188,15 @@ function formatProduct(product, quantity = undefined) {
 function cartInfo(cart) {
 	/* Útfæra */
 	let str = '';
+	let sum = 0;
 	if (Object.keys(cart.lines).length > 0) {
 		for (let i = 0; i < Object.keys(cart.lines).length; i++) {
-			str = str + formatProduct(cart.lines[i].product, cart.lines[i].quantity) + '\n';
+			str += formatProduct(cart.lines[i].product, cart.lines[i].quantity) + '\n';
+			sum += cart.lines[i].product.price*cart.lines[i].quantity;
 		}
+		str += 'Samtals: ' + formatPrice(sum);
 		return str;
-	} else {
+	} else { 
 		return 'tómt';
 	}
 	// return str;
@@ -290,10 +294,13 @@ function showProducts() {
 	/* Útfæra */
 	/* Hér ætti að nota `formatPrice` hjálparfall */
 	let str = '';
-
+	let bil = ' - ';
+	let s = 0;
 	for (let i = 0; i < products.length; i++) {
-		str = str + formatProduct(products[i]) + products[i].description + '\n';
+		s += i + 1;
+		str += '#' + s.toString() + ' ' + products[i].title + bil + products[i].description + bil + formatPrice(products[i].price) + '\n';
 	}
+	return str;
 }
 /**
  * Bæta vöru við körfu.
